@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     # Needed to silence warnings (and to be a worthwhile package)
-    name='Parking Dirty Object Detection',
+    name='pdod',
     url='https://github.com/danbernstein/parkingdirty',
     author='Dan Bernstein',
     author_email='danbernstein94@gmail.com',
