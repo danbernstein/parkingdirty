@@ -7,7 +7,7 @@ setup(
     author='Dan Bernstein',
     author_email='danbernstein94@gmail.com',
     # Needed to actually package something
-    #packages=['pd_obj_det'],
+    packages=['pdod'],
     # Needed for dependencies
     install_requires=['numpy'],
     # *strongly* suggested for sharing
