@@ -7,7 +7,7 @@ setup(
     author='Dan Bernstein',
     author_email='danbernstein94@gmail.com',
     # Needed to actually package something
-    packages=['pdod','visuals','imports'],
+    packages=['pdod','pdod.visuals','pdod.imports'],
     # Needed for dependencies
     install_requires=[],
     # *strongly* suggested for sharing
