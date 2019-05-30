@@ -7,7 +7,7 @@ setup(
     author='Dan Bernstein',
     author_email='danbernstein94@gmail.com',
     # Needed to actually package something
-    packages=['pdod','pdod.visuals','pdod.imports', 'pdod.analyses', 'pdod.detection', 'pdod.models'],
+    packages=['pdod'],
     # Needed for dependencies
     install_requires=[],
     # *strongly* suggested for sharing
