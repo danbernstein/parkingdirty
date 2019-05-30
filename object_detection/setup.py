@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     # Needed to silence warnings (and to be a worthwhile package)
@@ -7,7 +7,7 @@ setup(
     author='Dan Bernstein',
     author_email='danbernstein94@gmail.com',
     # Needed to actually package something
-    packages=['pdod'],
+    packages=find_packages(),
     # Needed for dependencies
     install_requires=[],
     # *strongly* suggested for sharing
