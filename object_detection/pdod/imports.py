@@ -1,13 +1,15 @@
 def download_data(cam):
   if cam == "single":
+
+# download and read in data
     zip_address = 'http://parkingdirty.com/BlockedBikeLaneTrainingSingleCam.zip'
   else:
     zip_address = 'http://parkingdirty.com/BlockedBikeLaneTrainingFull.zip'
-    
+
     r = requests.get(zip_address)
     z = zipfile.ZipFile(io.BytesIO(r.content))
     z.extractall('object_detection/input_imgs') # extract images from zip to input_imgs folder
-    
+
     print('data downloaded successfully')
     
 
