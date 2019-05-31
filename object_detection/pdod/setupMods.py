@@ -1,7 +1,8 @@
 import os, urllib, tarfile
 import tensorflow as tf
 
-import label_map_util
+from object_detection.utils import label_map_util
+from object_detection.utils import visualization_utils as vis_util
 
 def set_up_model(model_name):
   MODEL_NAME = model_name
