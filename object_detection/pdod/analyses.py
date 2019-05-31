@@ -63,7 +63,7 @@ def process_images(detection_graph, path_images_dir, save_directory, threshold, 
   print('successfully run at ' + str(datetime.datetime.now()))
   return csv_file
 
-import time, Image
+import time
 import os
 from PIL import Image, ImageOps
 
