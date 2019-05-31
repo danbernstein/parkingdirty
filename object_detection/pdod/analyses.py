@@ -65,6 +65,8 @@ def process_images(detection_graph, path_images_dir, save_directory, threshold, 
 
 import time, Image
 import os
+from PIL import Image, ImageOps
+
 
 def analyze_image(image_path, path_images_dir, sess, image_tensor, detection_boxes, detection_scores, detection_classes, num_detections):
 
