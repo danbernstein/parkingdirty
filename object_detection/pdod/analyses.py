@@ -1,4 +1,4 @@
-"""piece of code that represent the concrete detection, calling the TF session"""
+import datetime, os
 
 def process_images(detection_graph, path_images_dir, save_directory, threshold, n, lane_poly, category_index):
 
@@ -61,6 +61,10 @@ def process_images(detection_graph, path_images_dir, save_directory, threshold, 
   print('successfully run at ' + str(datetime.datetime.now()))
   return csv_file
 
+import time, Image
+import numpy as np
+import os
+
 def analyze_image(image_path, path_images_dir, sess, image_tensor, detection_boxes, detection_scores, detection_classes, num_detections):
 
   start_time = time.time()
@@ -99,6 +103,8 @@ def analyze_image(image_path, path_images_dir, sess, image_tensor, detection_box
   boxes = np.squeeze(boxes)
 
   return timestamp, img_name, img_labels, boxes, scores, classes, num
+
+
 
 def analyze_boxes_yolo(model, category_index, boxes, scores, classes, lane_poly, threshold, timestamp, f, img_labels, num_cars_in_bikelane_01, num_cars_in_bikelane_015, 
   num_cars_in_bikelane_02, num_cars_in_bikelane_025, 
@@ -375,6 +381,8 @@ def analyze_boxes(model, category_index, boxes, scores, classes, lane_poly, path
     # return the data table
         return f
         
+import subprocess
+
 def get_misclassification(file, n):
 
   command = 'Rscript'
