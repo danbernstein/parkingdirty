@@ -1,3 +1,5 @@
+import requests, zipfile, io
+
 def download_data(cam):
     if cam == "single":
         zip_address = 'http://parkingdirty.com/BlockedBikeLaneTrainingSingleCam.zip'
