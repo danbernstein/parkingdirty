@@ -4,7 +4,6 @@ def download_data(cam):
   else:
     zip_address = 'http://parkingdirty.com/BlockedBikeLaneTrainingFull.zip'
     
-    import requests, zipfile, io
     r = requests.get(zip_address)
     z = zipfile.ZipFile(io.BytesIO(r.content))
     z.extractall('object_detection/input_imgs') # extract images from zip to input_imgs folder
