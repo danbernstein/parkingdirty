@@ -1,10 +1,8 @@
 def download_data(cam):
-  if cam == "single":
-
-# download and read in data
-    zip_address = 'http://parkingdirty.com/BlockedBikeLaneTrainingSingleCam.zip'
-  else:
-    zip_address = 'http://parkingdirty.com/BlockedBikeLaneTrainingFull.zip'
+    if cam == "single":
+        zip_address = 'http://parkingdirty.com/BlockedBikeLaneTrainingSingleCam.zip'
+    else:
+        zip_address = 'http://parkingdirty.com/BlockedBikeLaneTrainingFull.zip'
 
     r = requests.get(zip_address)
     z = zipfile.ZipFile(io.BytesIO(r.content))
@@ -14,30 +12,30 @@ def download_data(cam):
     
 
 def filter_data(pattern):
-  pattern = 'cam' + str(pattern)
-  pattern = '*' + pattern + '*'
+    pattern = 'cam' + str(pattern)
+    pattern = '*' + pattern + '*'
 
-  blocked = fnmatch.filter(os.listdir('object_detection/input_imgs/blocked'), pattern)
-  notblocked = fnmatch.filter(os.listdir('object_detection/input_imgs/notblocked'), pattern)
+    blocked = fnmatch.filter(os.listdir('object_detection/input_imgs/blocked'), pattern)
+    notblocked = fnmatch.filter(os.listdir('object_detection/input_imgs/notblocked'), pattern)
 
-  files = [blocked, notblocked]
+    files = [blocked, notblocked]
 
-  return files
+    return files
 
 
 def subset_data(pattern):
-  pattern_path = 'object_detection/input_imgs_subset_cam' + str(pattern)
-  if not os.path.exists(pattern_path):
-  #  shutil.rmtree('object_detection/input_imgs_subset')
-    os.makedirs(pattern_path + '/blocked')
-    os.makedirs(pattern_path + '/notblocked')
+    pattern_path = 'object_detection/input_imgs_subset_cam' + str(pattern)
+    if not os.path.exists(pattern_path):
+    #  shutil.rmtree('object_detection/input_imgs_subset')
+      os.makedirs(pattern_path + '/blocked')
+      os.makedirs(pattern_path + '/notblocked')
 
-  print('subsetting the data')
+    print('subsetting the data')
 
-  for f in filter_data(pattern)[0]:
-      shutil.copy('object_detection/input_imgs/blocked/' + f, pattern_path + '/blocked')
-  for f in filter_data(pattern)[1]:
-      shutil.copy('object_detection/input_imgs/notblocked/' + f, pattern_path + '/notblocked')    
+    for f in filter_data(pattern)[0]:
+        shutil.copy('object_detection/input_imgs/blocked/' + f, pattern_path + '/blocked')
+    for f in filter_data(pattern)[1]:
+        shutil.copy('object_detection/input_imgs/notblocked/' + f, pattern_path + '/notblocked')    
 
 
 def get_polygon(camera):
