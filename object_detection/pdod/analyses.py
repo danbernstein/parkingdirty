@@ -1,4 +1,6 @@
 import datetime, os
+import matplotlib.path as mpltPath
+import numpy as np
 
 def process_images(detection_graph, path_images_dir, save_directory, threshold, n, lane_poly, category_index):
 
@@ -62,7 +64,6 @@ def process_images(detection_graph, path_images_dir, save_directory, threshold, 
   return csv_file
 
 import time, Image
-import numpy as np
 import os
 
 def analyze_image(image_path, path_images_dir, sess, image_tensor, detection_boxes, detection_scores, detection_classes, num_detections):
