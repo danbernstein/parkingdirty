@@ -1,6 +1,5 @@
 def download_data(cam):
   if cam == "single":
-    # download and read in data
     zip_address = 'http://parkingdirty.com/BlockedBikeLaneTrainingSingleCam.zip'
   else:
     zip_address = 'http://parkingdirty.com/BlockedBikeLaneTrainingFull.zip'
