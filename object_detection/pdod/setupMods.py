@@ -45,8 +45,6 @@ def set_up_model(model_name):
   return detection_graph, label_map, categories, category_index
 
 import os
-pip install gluoncv
-pip install mxnet
 import gluoncv
 
 def set_up_model_yolo(trained_model):
