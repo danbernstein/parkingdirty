@@ -7,9 +7,9 @@ def run_model(dir_blocked, dir_notblocked, model, pattern, threshold, n):
 
   if model == "yolo":
     print('setting up: ' + model)
-    net, category_index = set_up_model_yolo('yolo3_darknet53_voc')
+    net, category_index = setupMods.set_up_model_yolo('yolo3_darknet53_voc')
 
-    process_images_yolo(
+    analyses.process_images_yolo(
                  model,
                  net, 
                  'object_detection/input_imgs_subset_cam' + str(pattern), # path to subdirectory of images
@@ -26,7 +26,7 @@ def run_model(dir_blocked, dir_notblocked, model, pattern, threshold, n):
     ## args: detection_graph from set_up_model(), the input dir, output dir, threshold for obstacle detection, and number of images to process
     ## get lane polygon from https://www.image-map.net/
 
-    process_images(detection_graph, 
+    analyses.process_images(detection_graph, 
                    'object_detection/input_imgs_subset_cam' + str(pattern), # path to subdirectory of images
                    'object_detection/output_imgs', # where to put output images, if visualization is included
                    threshold,  # threshold for classification
