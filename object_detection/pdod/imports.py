@@ -17,19 +17,19 @@ def download_data(cam):
     print('data downloaded successfully')
     
 
-def filter_data(pattern):
+def filter_data(dir_blocked, dir_notblocked, pattern):
     pattern = 'cam' + str(pattern)
     pattern = '*' + pattern + '*'
 
-    blocked = fnmatch.filter(os.listdir('object_detection/input_imgs/blocked'), pattern)
-    notblocked = fnmatch.filter(os.listdir('object_detection/input_imgs/notblocked'), pattern)
+    blocked = fnmatch.filter(os.listdir(dir_blocked), pattern)
+    notblocked = fnmatch.filter(os.listdir(dir_notblocked), pattern)
 
     files = [blocked, notblocked]
 
     return files
 
 
-def subset_data(pattern):
+def subset_data(dir_blocked, dir_notblocked, pattern):
     pattern_path = 'object_detection/input_imgs_subset_cam' + str(pattern)
     if not os.path.exists(pattern_path):
     #  shutil.rmtree('object_detection/input_imgs_subset')
@@ -39,9 +39,9 @@ def subset_data(pattern):
     print('subsetting the data')
 
     for f in filter_data(pattern)[0]:
-        shutil.copy('object_detection/input_imgs/blocked/' + f, pattern_path + '/blocked')
+        shutil.copy(dir_blocked + f, pattern_path + '/blocked')
     for f in filter_data(pattern)[1]:
-        shutil.copy('object_detection/input_imgs/notblocked/' + f, pattern_path + '/notblocked')    
+        shutil.copy(dir_notblocked + f, pattern_path + '/notblocked')    
 
 
 def get_polygon(camera):
