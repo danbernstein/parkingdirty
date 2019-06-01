@@ -38,7 +38,7 @@ def subset_data(dir_blocked, dir_notblocked, pattern):
 
     print('subsetting the data')
 
-    for f in filter_data(pattern)[0]:
+    for f in filter_data(dir_blocked, dir_notblocked, pattern)[0]:
         shutil.copy(dir_blocked + f, pattern_path + '/blocked')
     for f in filter_data(pattern)[1]:
         shutil.copy(dir_notblocked + f, pattern_path + '/notblocked')    
