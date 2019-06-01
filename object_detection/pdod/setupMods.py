@@ -46,7 +46,10 @@ def set_up_model(model_name):
   return detection_graph, label_map, categories, category_index
 
 import os
-import gluoncv
+from gluoncv import model_zoo, data, utils
+from object_detection.utils import label_map_util
+from object_detection.utils import visualization_utils as vis_util
+
 
 def set_up_model_yolo(trained_model):
 
