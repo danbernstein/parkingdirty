@@ -2,7 +2,7 @@ from pdod import analyses, setupMods, visualize, imports
 
 def run_model(model, pattern, threshold, n):
   pattern = pattern
-  subset_data(pattern)
+  imports.subset_data(pattern)
   polygon = get_polygon(pattern)
 
   if model == "yolo":
