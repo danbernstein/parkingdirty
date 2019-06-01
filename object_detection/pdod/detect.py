@@ -1,8 +1,8 @@
 from pdod import analyses, setupMods, visualize, imports
 
-def run_model(model, pattern, threshold, n):
+def run_model(dir_blocked, dir_notblocked, model, pattern, threshold, n):
   pattern = pattern
-  imports.subset_data(pattern)
+  imports.subset_data(dir_blocked, dir_notblocked, pattern)
   polygon = imports.get_polygon(pattern)
 
   if model == "yolo":
