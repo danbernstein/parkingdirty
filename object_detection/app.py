@@ -1,4 +1,10 @@
+from flask import Flask, request
 # parking dirty workflow for model deployment
+import sys
+import os
+
+
+#sys.path.append('/usr/local/lib/python2.7/site-packages')
 
 import numpy as np
 import requests
@@ -10,22 +16,7 @@ import shapely
 import matplotlib.path as mpltPath
 import matplotlib.patches as patches
 from shapely.geometry import Polygon
-
-
-
-# flask app set up
-
-# load pre-trained TensorFlow model on a server using TF Serving and Docker - https://medium.com/@pierrepaci/deploy-tensorflow-object-detection-model-in-less-than-5-minutes-604e6bb0bb04
-
-# need to figure out how to run these commands in python
 import subprocess
-
-#!MODEL_URL = 'http://download.tensorflow.org/models/object_detection/ssd_resnet50_v1_fpn_shared_box_predictor_640x640_coco14_sync_2018_07_03.tar.gz'
-#! git clone https://gist.github.com/adabb12c69cced99d3864d601d033001.git  object-detect
-#! cd object-detect
-#! docker built -t object-detect --build-arg model_url=MODEL_URL .
-#! docker run -p 8080:8080 -p 8081:8081 object-detect
-
 
 # functions ------------------------------------------------------------------------------
 def get_polygon(camera):
@@ -48,7 +39,7 @@ def process_boxes(box, lane):
 
   ymin, xmin, ymax, xmax = box
 
-  height, width, channels = image.shape
+  height, width, channels = 288, 352, 3
 
   center_x = (((xmax * width) - (xmin * width)) / 2) + (xmin * width) # x dimension of image
   center_y = (((ymax * height) - (ymin * height)) / 2) + (ymin * height) # y dimension of image
@@ -86,30 +77,81 @@ def analyze_detection_results(boxes, scores, classes, lane_poly, score_threshold
         if overlap >= overlap_threshold:
           num_objs += 1
 
-    #print(num_objs)
 
     # return the data table
-    return num_objs
+    return str(num_objs)
 
 
-# read data from somewhere - either batch or streaming
-image = cv2.imread("object-detect/2016-09-16 150825 cam135.png")  # Change dog.jpg with your image
 
-## calculate overlap from boxes and lane polygon
-pattern = 135
-polygon = get_polygon(pattern)
-# pre-process data for input into model
-image_np = np.array(image)
+app = Flask(__name__)
 
-payload = {"instances": [image_np.tolist()]}
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 
-# send POST requests to the served model
-res = requests.post("http://localhost:8080/v1/models/default:predict", json = payload)
 
-# process POST request to classify images as blocked not blocked
+# flask app set up
 
-classes_int = np.squeeze(res.json()['predictions'][0]['detection_classes'])
-boxes = np.squeeze(res.json()['predictions'][0]['detection_boxes'])
-scores = np.squeeze(res.json()['predictions'][0]['detection_scores'])
+# load pre-trained TensorFlow model on a server using TF Serving and Docker - https://medium.com/@pierrepaci/deploy-tensorflow-object-detection-model-in-less-than-5-minutes-604e6bb0bb04
 
-out = analyze_detection_results(boxes, scores, classes_int, polygon, score_threshold = 0.4, overlap_threshold = 0.4)
+# need to figure out how to run these commands in python
+
+#!MODEL_URL = 'http://download.tensorflow.org/models/object_detection/ssd_resnet50_v1_fpn_shared_box_predictor_640x640_coco14_sync_2018_07_03.tar.gz'
+#! git clone https://gist.github.com/adabb12c69cced99d3864d601d033001.git  object-detect
+#! cd object-detect
+#! docker built -t object-detect --build-arg model_url=MODEL_URL .
+#! docker run -p 8080:8080 -p 8081:8081 object-detect
+
+
+def get_query():
+    # here we want to get the value of user (i.e. ?user=some-value)
+    cam = request.args.get('cam')
+    startTime = request.args.get('sTime')
+    endTime = request.args.get('eTime')
+    score = request.args.get('score')
+    overlap = request.args.get('overlap')
+
+    return cam, startTime, endTime, score, overlap
+
+def filter_imgs(a,b,c,d,e):
+
+    img_files = os.listdir("imgs")
+
+    out = list(filter(lambda k: str('15') in k, img_files))
+
+    return out
+
+
+@app.route('/run')
+def execute_this():
+
+    a,b,c,d,e = get_query()
+
+    img_file = filter_imgs(a,b,c,d,e)
+
+    s_threshold = float(d)
+    o_threshold = float(e)
+
+    # read data from somewhere - either batch or streaming
+    image = cv2.imread('imgs/' + img_file[0])
+
+    ## calculate overlap from boxes and lane polygon
+    pattern = 135
+    polygon = get_polygon(pattern)
+    # pre-process data for input into model
+    image_np = np.array(image)
+
+    payload = {"instances": [image_np.tolist()]}
+
+    # send POST requests to the served model
+    res = requests.post("http://localhost:8080/v1/models/default:predict", json = payload)
+
+    # process POST request to classify images as blocked not blocked
+
+    classes_int = np.squeeze(res.json()['predictions'][0]['detection_classes'])
+    boxes = np.squeeze(res.json()['predictions'][0]['detection_boxes'])
+    scores = np.squeeze(res.json()['predictions'][0]['detection_scores'])
+
+    out = analyze_detection_results(boxes, scores, classes_int, polygon, score_threshold=s_threshold, overlap_threshold=o_threshold)
+
+    return out
